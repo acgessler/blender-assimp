@@ -1,0 +1,701 @@
+commit e3b2bccba6145290738a6677c14f7369ec7a38cd
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Thu Apr 4 02:59:58 2013 +0600
+
+    Suppress strict compiler warnings in glags/glog libraries
+
+commit 5fca459adcf0a3419fa9cd8d983dc2c952d02647
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Thu Apr 4 01:20:18 2013 +0600
+
+    Lint cleanup, mostly white space and line width.
+    
+    Also moved own includes to the top of files.
+    
+    Should be no functional changes :)
+
+commit 9a9dd458a622928b91dbd3c79900577923283838
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Fri Mar 29 00:20:29 2013 +0600
+
+    Fix for TransformTracks in uncalibrated pipeline
+    
+    Transformation matrix was completely ignored by
+    TransformTracks() and final marker coordinate
+    exactly matched it's source coordinates.
+    
+    Seems to be just a typo in vector usage: need to
+    use "b" (which is transformed one) instead of "a"
+    when converting projective coordinate to 2D space.
+
+commit d35766cc9901609e32f4d80faba715695bea3c40
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Fri Mar 29 00:19:11 2013 +0600
+
+    Revert part of e2eb58c4230f94ef0c72fb4005e5434088d52e80
+    
+    That commit included one change which shall have been
+    go as separate commit with more detailed description.
+
+commit e8d71b4e96fd78eb60773b6557d66da672e65753
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Wed Mar 27 20:37:05 2013 +0600
+
+    Silenced more warnings
+    
+    - Added includes of own header to fast implementation files.
+    
+    - Camera intrinsics wouldn't complain about unknown pragma when
+      building without OpenMP support.
+    
+    TODO: Make it a CMake option to build libmv with OpenMP support.
+    	  Currently multi-threaded intrinsics only available when
+          using custom CMake rules for bundled libmv version
+          (as it's done in Blender).
+
+commit ad442812654f270dc088394410fda1b81b8dc450
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Wed Mar 27 20:18:51 2013 +0600
+
+    Multithreaded camera intrinsics
+    
+    Implemented multithreaded buffer (un)distortion
+    for camera intrinsics using OpenMP.
+    
+    By default, (un)distortion is single-threaded,
+    but it is possible to as CameraIntrinsics to
+    use more threads by calling SetThreads method.
+
+commit c88b4881096174a16a9f9e6fc2c9dcad3e255b25
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Wed Mar 27 18:45:09 2013 +0600
+
+    Movie functions implementation from panography header
+    into own CC implementation file.
+    
+    Before this all panography functions were declared as
+    static, which is not so much useful from re-useability
+    point of view.
+
+commit 2d2faf9104bc035722cff6775e1b8e7c93143aba
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Wed Mar 27 18:37:36 2013 +0600
+
+    Build shared Ceres library only if BUILD_SHARED_LIBS is enabled
+
+commit daa3ddd3260ccaf2bf9c72eadb89213d91e549ec
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Wed Mar 27 18:21:52 2013 +0600
+
+    Update Ceres to upstream version 1.5.0
+
+commit cf5dc678878345ea3f221ce50cb2b9e539c2ab38
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Wed Mar 27 15:06:24 2013 +0600
+
+    Code cleanup: removed more deprecated FFmpeg API usage
+    
+    This time in qt-tracker application.
+
+commit e2eb58c4230f94ef0c72fb4005e5434088d52e80
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Tue Mar 26 17:19:51 2013 +0600
+
+    Code cleanup: silent unused variables warnings
+
+commit af89bb24667e39b7e655173ea807fdcfbeef4422
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Tue Mar 26 16:54:14 2013 +0600
+
+    Code cleanup: no need to declare empty body for ProgressUpdateCallback:invoke
+    
+    Make force this method to be overridden by derivative classes.
+    Also removed currently unneeded callbacks.cc.
+
+commit 0441d4ee06fad0219256a5704f931eec916a3868
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Tue Mar 26 16:37:27 2013 +0600
+
+    Code cleanup: silent type narrowing in qt-tracker
+
+commit cd4b61c976448d0fdedefb3ed4b21d70e078f94b
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Tue Mar 26 16:26:39 2013 +0600
+
+    Changes to unit testing
+    
+    - Move ceres test binaries to ${LIBMV_TESTS_OUTPUT_DIR}/ceres,
+      so they don't mess with libmv's application binaries and
+      tests.
+    
+    - Removed ceres_ prefix from ceres unit tests, only use this
+      prefix for targets (targets need to be unique name).
+    
+    - Added unit tests data for ceres, otherwise system_test fails.
+    
+    - Restored "test" makefile target.
+
+commit cf704ada08acc8b26167e7bfb3e1e88fd278de23
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Tue Mar 26 15:01:15 2013 +0600
+
+    Code cleanup: use rw-rw-r-- mode for source files
+
+commit 64b31e3e43acb52aaf6f591b9d1c2449bf6ef3bd
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Tue Mar 26 14:57:46 2013 +0600
+
+    Code cleanup: don't use deprecated FFmpeg API functions
+
+commit 2a3676499548ad5dba5a5c5eadf3bb71e640b612
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Tue Mar 5 17:40:52 2013 +0600
+
+    Switch from DENSE_NORMAL_CHOLESKY to DENSE_QR
+    
+    DENSE_QR is better behaved numerically and after recent
+    changes from Sameer there's no big difference in speed.
+
+commit bcb920df02133da5b7e55fbc74edb9222004eecc
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Tue Mar 5 17:15:43 2013 +0600
+
+    Update Ceres to 1.5RC3
+    
+    It brings optimization of DENSE_QR and DENSE_SCHUR solvers.
+
+commit 473996468a4e67e7c860169181a4ff31ce9b8c80
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Fri Mar 1 17:44:54 2013 +0600
+
+    Fixed incorrect order of arguments passing
+    to EXPECT_EQ in keyframe selection tests.
+
+commit d38ebb74693fdf5b8f0fecf62a3d8c9c53b0b84a
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Fri Mar 1 17:40:38 2013 +0600
+
+    Modal (aka tripod) solver rework
+    
+    Several major things are done in this commit:
+    
+    - First of all, logic of modal solver was changed.
+      We do not rely on only minimizer to take care of
+      guessing rotation for frame, but we're using
+      analytical rotation computation for point clouds
+      to obtain initial rotation.
+    
+      Then this rotation is being refined using Ceres
+      minimizer and now instead of minimizing average
+      distance between points of point of two clouds,
+      minimization of reprojection error of point
+      cloud onto frame happens.
+    
+      This gives quite a bit of precision improvement.
+    
+    - Second bigger improvement here is using bundle
+      adjustment for a result of first step when we're
+      only estimating rotation between neighbor images
+      and reprojecting markers.
+    
+      This averages error across the image sequence
+      avoiding error accumulation. Also, this will
+      tweak bundles themselves a bit for better match.
+    
+    - And last bigger improvement here is support of
+      camera intrinsics refirenment.
+    
+    This allowed to significantly improve solution
+    for real-life footage and results after such
+    refining are much more usable than it were before.
+    
+    Thanks to Keir for the help and code review!
+
+commit 5d6c2e7a27bdd1a1b23bf289d70a9b8f62514c9a
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Fri Mar 1 17:37:35 2013 +0600
+
+    Increase verbosity level for reprojected markers info
+    
+    This information is useful, but in cases when you, say,
+    working on a bundler it's annoying to scroll all the
+    information up.
+
+commit ac252bb1250b3028b9c94736b644e7ab4e7b14b8
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Fri Mar 1 17:36:19 2013 +0600
+
+    Move radial distortion code to own templated function
+    
+    This shall not lead to any functional changes, just
+    avoids radial distortion code duplicated in camera
+    intrinsics and bundling code.
+    
+    For fancier bundle adjustment support of  different
+    distortion models this is not actually enough and
+    would need to make some bigger changes, but this
+    changes makes code a bit easier to maintain already.
+
+commit c253b794612dd529e1d3a9bd7a7c41c32c9a9abb
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Fri Mar 1 17:33:27 2013 +0600
+
+    Use threaded cost function, jacobian and linear solver
+    computation, so bundling is as fast as it could be with
+    current parameter block structure.
+
+commit 931fe37a10212b91b525d4f6eb753990a338b471
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Fri Mar 1 17:29:21 2013 +0600
+
+    Fixed comment for euclidean bundling,
+    which is now supports raidal bundling independently
+    from other intrinsics.
+
+commit 217d8e6edc3de1a853fb84275d2d2dd898e7529c
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Tue Feb 26 18:19:01 2013 +0600
+
+    Allow K1,K2 refirement combination
+    
+    It is now possible to refine only radial distortion
+    with new Ceres based bundler and this new combination
+    is already used in Blender.
+
+commit d8850addc944d400f7a9c358396c437d9e4acc70
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Tue Feb 26 18:17:09 2013 +0600
+
+    Switch euclidean intersection code to use Ceres
+    
+    Would not expect any significant changes in solver
+    behavior, but it could be more accurate in some cases.
+    
+    Switching projective intersection to ceres is marked
+    as a TODO for now.
+
+commit 6990b7946ec96b3cb2dcfc8a1beaaba9538b0802
+Author: Keir Mierle <mierle@gmail.com>
+Date:   Mon Feb 25 20:00:48 2013 +0000
+
+    Switch motion tracker bundle adjustment to Ceres.
+    
+    Patch originally written by me, then finished by Sergey. Big
+    thanks to Sergey for troopering through and fixing the many issues
+    with my original (not compilable) patch.
+    
+    The Ceres implementation uses 2 parameter blocks for each camera
+    (1 for rotation and 1 for translation), 1 parameter block for
+    common intrinsics (focal length etc) and 1 parameter block for
+    each track (e.g. bundle or 3D point).
+    
+    We turn on some fancy optimizer options to get better performance,
+    in particular:
+    
+      options.preconditioner_type = ceres::SCHUR_JACOBI;
+      options.linear_solver_type = ceres::ITERATIVE_SCHUR;
+      options.use_inner_iterations = true;
+      options.use_nonmonotonic_steps = true;
+      options.max_num_iterations = 100;
+    
+    Special thanks to Sameer Agarwal of Ceres fame for splitting out
+    the SCHUR_JACOBI preconditioner so that it didn't depend on
+    CHOLMOD.  Previously we could not use that preconditioner in
+    Blender because CHOLMOD is too large of a dependency for Blender.
+    
+    BundleIntrinsicsLogMessage:
+    - Moved bunch of if(foo) LG << "bar" into this function, to make
+      EuclideanBundleCommonIntrinsics a little bit easier to follow.
+    
+    EuclideanBundle:
+    - Fix RMSE logging.
+
+commit 1696342954614b54133780d74d6ee0fbcbe224f0
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Tue Feb 26 18:10:33 2013 +0600
+
+    Upgrade ceres to latest upstream version
+    
+    This is needed because of some features of new Ceres
+    for further development.
+
+commit 575336f794841ada90aacd783285014081b8318c
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Mon Jan 7 15:58:40 2013 +0600
+
+    Fixed for keyframe selection
+    
+    - Calculate residuals for GRIC in pixel space rather than
+      in normalized space.
+    
+      This seems to be how it's intended to be used.
+    
+      Algebraic H and F will still use normalized coordinates which
+      are more stable, after this matrices are converted to pixel
+      space and Ceres refinement happens in pixel space.
+    
+    - Standard deviation calculation was wrong in GRIC. It shouldn't
+      be deviation of residuals, but as per Torr it should be deviation
+      of measurement error, which is constant (in our case 0.1)
+    
+      Not sure if using squared cost function is correct for GRIC,
+      but cost function is indeed squared and in most papers cost
+      function is used for GRIC. After some further tests we could
+      switch GRIC residuals to non-squared distance.
+    
+    - Bring back rho part of GRIC, in unit tests it doesn't make
+      sense whether it's enabled or not, lets see how it'll behave
+      in real-life footage.
+    
+    - Added one more unit test based on elevator scene and manual
+      keyframe selection.
+
+commit 24117f3c3fc5531beb6497d79bb6f1780a998081
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Sun Jan 6 19:07:06 2013 +0600
+
+    Added test for keyframe selection based on manual selection
+    
+    Additional changes:
+    
+    - Reduce minimal correspondence to match real-world manually
+      tracked footage
+    
+    - Returned back squares to SymmetricEpipolarDistance and
+      SymmetricGeometricDistance -- this is actually a cost
+      functions, not distances and they shall be squared.
+
+commit 770eb0293b881c4c419c587a6cdb062c47ab6e44
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Fri Dec 21 00:43:30 2012 +0600
+
+    Improvements for keyframe selection
+    
+    - Changed main keyframe selection cycle, so in cases there're no
+      more next keyframes for current keyframe could be found in the
+      image sequence, current keyframe would be moved forward and
+      search continues.
+    
+      This helps in cases when there's poor motion in the beginning
+      of the sequence, then markers becomes occluded. There could be
+      good keyframes in the middle of the shot still.
+    
+    - Extended keyframe_selection_test with real world cases.
+    
+    - Moved correspondences constraint to the top, so no H/F estimation
+      happens if there's bad correspondence. Makes algorithm go a bit
+      faster.
+    
+    Strangely, but using non-squared distances makes neighbor frames
+    test fail, using squared distances makes this tests pass.
+    
+    However, using non-squared distances seems to be working better
+    in real tests i've been doing. So this requires more investigation/
+
+commit 7415c62fbda36c5bd1c291bc94d535a66da896d0
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Thu Dec 20 18:46:09 2012 +0600
+
+    Cosmetic change to correspondences reports in keyframe selection
+
+commit ceaf80c987ec0338e7e83965bc808411453eb755
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Thu Dec 20 18:08:03 2012 +0600
+
+    Various fixes:
+    
+    - That was a typo in symmetric geometric cost functor, which
+      computed inverse distance in a wrong way.
+    
+    - Fixed compilation of unit tests
+    
+    - Added simple test for keyframe selection. Currently only
+      covers case that neighbor frames with only translation
+      (homography should be better than fundamental) are not
+      considered a keyframes.
+    
+      Still need to be investigated why it only works if tracks
+      are in pixel space and why doesn't work in normalized space.
+
+commit cfabdfe48df2add3d1f30cf4370efd0b31990ab0
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Thu Dec 20 05:46:53 2012 +0600
+
+    Assorted fixes for keyframe selection:
+    
+    - Biggest error was in cost functors used for F and H refirement,
+      they were just wrong.
+    
+    - Use natural logarithms, since it's actually makes sense from
+      math papers point of view and error is somewhere else.
+    
+    - Disabled rho for GRIC, for now use non-clamped error for tests.
+    
+    - Made SymmetricEpipolarDistance returning non-squared distance
+      Keyframe selection is currently the only used of this function
+      and it seems using non-squared distance makes much more sense.
+    
+      Also would think to append suffix "Squared" to functions which
+      returns squared distances.
+    
+    - Removed templated version of SymmetricEpipolarDistance, since
+      it's not needed actually.
+    
+    This is actually even worse working than previous implementation,
+    but commit it needed for further review.
+
+commit 35d8c57626ad74818f155e6e5960c663ea84e032
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Thu Dec 20 03:00:40 2012 +0600
+
+    Euclidean resection cost function didn't use correct constructor
+    
+    It was storing a reference to initial rotation passed by value,
+    leading to pointer being pointing to a stack variable, leading to
+    wrong memory access in residuals computing.
+    
+    Apparently was visible in optimized builds only with inline
+    substitution allowed.
+
+commit 0798d3162bb49cee7e1c423ceccbca1326ad5650
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Thu Dec 20 02:50:52 2012 +0600
+
+    Automatic keyframe selection based on Pollefeys's criteria
+    
+    This commit implements automatic keyframe selection algorithm
+    based on Pollefeys's criteria (F-GRIC is smaller than H-GRIC
+    and correspondence ratio is more then 90%).
+    
+    It is implemented as a part of simple pipeline and returns
+    vector of keyframe images for a given Tracks structure.
+    
+    For simple pipeline reconstruction two best keyframes are
+    expected to be selected from all detected candidates.
+    Criteria for this selection could be reprojection error of
+    solution from two candidate keyfames.
+    
+    Unfortunately, it's not fully workable yet, hopefully would
+    be fixed soon.
+
+commit e943985552f0598ae122252876f305d72c25c2f9
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Thu Dec 6 17:47:11 2012 +0600
+
+    Camera Tracking: allow fallback to reprojection resection
+    by user demand
+    
+    This fixes some "regressions" introduced in previous commit
+    which lead to much worse solution in some cases. Now it's
+    possible to bring old behavior back.
+    
+    Perhaps it's more like temporal solution for time being smarter
+    solution is found. But finding such a solution isn't so fast,
+    so let's bring manual control over reprojection usage.
+    
+    But anyway, imo it's now nice to have a structure which could
+    be used to pass different settings to the solver.
+
+commit 5a23d01dd531d1e0798298d17ba42a3397effb82
+Author: Keir Mierle <mierle@gmail.com>
+Date:   Thu Sep 20 18:55:44 2012 +0000
+
+    Make Euclidean resection "always" succeed.
+    
+    The Euclidean resection code had a magical constant, 1e-3, used to
+    compare the results of solving an equation. This failure detection
+    was well-intended, trying to prevent poor solutions from getting
+    made without notifying the caller. Unfortunately in practice, this
+    threshold is too conservative. Furthermore, it is not clear the
+    threshold should exist at all; the purpose of the Euclidean
+    resection is to come up with the best solution it can; other
+    methods (e.g. reprojection error) should be used to compare
+    whether the method succeeded.
+    
+    This commit changes the Euclidean EPnP code to always succeed,
+    causing the previous fallback to projective resection to never
+    run. In most cases, this will result in better reconstructions.
+    
+    This should, in most cases, fix the dreaded "flipping" problem.
+
+commit 57dad861d2a7f9d058c6d8edde1a2d51d7225a51
+Author: Keir Mierle <mierle@gmail.com>
+Date:   Thu Sep 20 02:27:34 2012 +0000
+
+    Fix variable naming in the planar tracker.
+
+commit e9392fd3b46f5668662935696e7d9afac3390ca4
+Author: Keir Mierle <mierle@gmail.com>
+Date:   Thu Sep 20 02:10:33 2012 +0000
+
+    Add smarter tolerance checking in the planar tracker.
+    
+    The planar tracker uses Ceres for the refinement stage. During
+    refinement, Ceres iteratively updates the parameters with the
+    latest best guess. If the change in the parameters falls below a
+    threshold, Ceres will abort successfully ("converged").
+    
+    For the case of pure translation tracking, the parameters are
+    exactly the two pixel shifts (dx, dy), and measuring the change in
+    these parameters gives a meaningful termination criterion.
+    However, for all the other parameterizations like affine, where
+    the parameterization involves affine parameters that have no
+    physical interpretation, Ceres is left with no way to terminate
+    the solver early. With the existing code, often many iterations
+    are run long after Ceres has found a solution sufficiently
+    accurate for all tracking needs. No one needs tracking with
+    a quadrillionth of a pixel accuracy; that time is wasted.
+    
+    This patch extends the existing iteration callback that is passed
+    in to Ceres to check if the pattern has fallen out of the search
+    window, to also check if the optimizer has made a tiny step. In
+    particular, if the maximum shift of any patch corner between two
+    successful optimizer steps is less than a threshold (currently
+    0.005 pixels), the track is declared successful and tracking
+    is terminated.
+    
+    This leads to dramatic speed increases in some cases, with little
+    to no loss in track quality. This is especially apparent when
+    tracking patches with affine or perspective motion models. For
+    example, on some tracking cases I tried, the iterations Ceres took
+    went from 50 to 3.
+
+commit 36729c19bf90cb767e9adb96ba7dd48a5ace2be1
+Author: Keir Mierle <mierle@gmail.com>
+Date:   Wed Sep 19 22:25:02 2012 +0000
+
+    Detect too-small planar tracking patches.
+    
+    The planar tracker did not detect very skinny patches which have
+    effectively zero area and are untrackable. This adds detection and
+    rejection of patterns with zero area. This fixes a crash found by
+    during Mango production.
+
+commit 5cf2bae255a5a0f2e36ea0516670782cb88b589d
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Thu Dec 6 17:33:53 2012 +0600
+
+    Real fix for previous commit from Keir. He's comment;
+    
+    Cleanup for when trackers fall out of the search window.
+    
+    Sergey originally left a TODO() here, but his fix is the correct
+    one. I removed the TODO and fixed some comment issues.
+
+commit a11533918720e5b43dc1e95895db0eb36c8c06aa
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Thu Dec 6 17:31:16 2012 +0600
+
+    Fix crash when tracking in planar motion model (and maybe some other)
+    
+    It was an Abort() caused by check for solver result not equal to USER_ABORT.
+    
+    In some cases solver returns USER_ABORT due to BoundaryCheckingCallback
+    detects coordinates does not belong to image.
+    
+    Somehow this callback wasn't called in previous version of Ceres and
+    in the same case marker was jumping. Now when the callback is called
+    it seems we could simply return failure of tracking without aborting
+    Blender.
+    
+    Probably this is in fact some issue somewhere else, would double
+    check with Keir about this.
+
+commit 4be2306bcc664b259aaf7068b9f32ab60124a509
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Thu Dec 6 17:29:39 2012 +0600
+
+    Resolved some compilation warnings (missed prototypes)
+    
+    In some cases it was missed include of header file, in some other
+    cases symbol could be static.
+
+commit bef729ba5c12683d13584d2a728b8b6506b7ca90
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Thu Dec 6 17:27:17 2012 +0600
+
+    Code cleanup: silence some -Wnarrowing warnings from C++11
+
+commit add1415d896818367087c784a3013dd8f1bb2095
+Author: Sergey Sharybin <sergey.vfx@gmail.com>
+Date:   Thu Dec 6 17:25:18 2012 +0600
+
+    Changes to SamplePlanarPatch to support mask input and
+    added output for pattern center.
+
+commit daa354c0735b954b0cd7725626e9a3d67416d46b
+Author: Keir Mierle <mierle@gmail.com>
+Date:   Sat Jun 9 19:22:39 2012 +0000
+
+    Change libmv's bilinear sampling to assume the same
+    pixel conventions as Blender. This fixes the preview
+    widget in Blender, and should make tracking slightly
+    more accurate.
+
+commit 99b6222873fbfbe248316316956720376a58f438
+Author: Keir Mierle <mierle@gmail.com>
+Date:   Sat Jun 9 18:58:51 2012 +0000
+
+    Add new warp regularization scheme for planar tracking.
+    
+    This adds a new term to the tracking cost function that
+    restricts how much the optimizer can warp the patch (as
+    opposed to merely adjusting the translation). This should
+    reduce the "jumpiness" that is sometimes seen when doing
+    non-"Loc" tracks.
+    
+    It is disabled in this commit; a subsequent commit will add
+    controls to the tracking dialog for this.
+
+commit a1c5a70badd11cba0470700bad2eac2b2bd30c86
+Author: Keir Mierle <mierle@gmail.com>
+Date:   Sat Jun 9 06:55:21 2012 +0000
+
+    Planar tracker polish.
+    
+    - Fixes the correlation checking code that was broken in the
+      previous commit. The bug was a transpose error.
+    - Fixes a memory leak of the warp functor, found by Sameer.
+    - Various cleanups done at Sameer's suggestion.
+    
+    Thanks to Sameer Agarwal for a code review.
+
+commit 2cb784caa854a77cdd43620ab133f26b87ed0d83
+Author: Keir Mierle <mierle@gmail.com>
+Date:   Fri Jun 8 17:42:17 2012 +0000
+
+    Make planar tracking much faster.
+    
+    - This makes planar tracking around 2-3x or more faster than
+      before, by rearranging how the sampling is done.
+      Previously, the source patch was sampled repeatedly on
+      every optimizer iteration; this was done for
+      implementation speed, but was wasteful in computation.
+    
+    - This also contains some additions to Ceres to help
+      deailing with mixed numeric / automatic differentation. In
+      particular, there is now a "Chain::Rule" operator that
+      facilitates calling a function that takes Jet arguments,
+      yet does numeric derivatives internally. This is used to
+      mix the numeric differentation of the images with the warp
+      parameters, passed as jets by Ceres to the warp functor.
+    
+      There is also a new "JetOps" object for doing operations
+      on types which may or may not be jets, such as scaling
+      the derivative part only, or extracting the scalar part
+      of a jet.
+    
+      This patche is aimed at Ceres upstream.
+    
+    - A new function for sampling a patch is now part of the
+      track_region.h API; this will get used to make the preview
+      widget properly show what is getting tracked. Currently
+      the preview widget does not handle perspective tracks.
+    
+    Known issues:
+    
+      This patch introduces a bug such that the "Minimum
+      Correlation" flag does not work; if it is enabled, tracking
+      aborts immediately. The workaround for now is to disable the
+      correlation checking, and examine your tracks carefully. A
+      fix will get added shortly.
