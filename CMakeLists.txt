@@ -23,6 +23,8 @@
 #
 # ***** END GPL LICENSE BLOCK *****
 
+
+
 #-----------------------------------------------------------------------------
 # We don't allow in-source builds. This causes no end of troubles because
 # all out-of-source builds will use the CMakeCache.txt file there and even
@@ -996,7 +998,8 @@ elseif(WIN32)
 	if(MSVC)
 		set(PLATFORM_LINKLIBS ws2_32 vfw32 winmm kernel32 user32 gdi32 comdlg32 advapi32 shfolder shell32 ole32 oleaut32 uuid psapi)
 
-		add_definitions(/D_CRT_NONSTDC_NO_DEPRECATE /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_CONSOLE /D_LIB)
+		add_definitions(/D_CRT_NONSTDC_NO_DEPRECATE /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_CONSOLE /D_LIB /D_ALLOW_KEYWORD_MACROS)
+
 
 		set(CMAKE_CXX_FLAGS "/nologo /J /Gd /EHsc" CACHE STRING "MSVC MT C++ flags " FORCE)
 		set(CMAKE_C_FLAGS   "/nologo /J /Gd"       CACHE STRING "MSVC MT C++ flags " FORCE)
