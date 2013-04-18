@@ -1,0 +1,27 @@
+#!/usr/bin/python
+
+
+Import ('env')
+
+sources = env.Glob('code/*.cpp') + env.Glob('contrib/clipper/*.cpp') + env.Glob('contrib/ConvertUTF/*.c') +\
+    env.Glob('contrib/irrXML/*.cpp') + \
+    env.Glob('contrib/poly2tri/poly2tri/sweep/*.cc') + \
+    env.Glob('contrib/poly2tri/poly2tri/common/*.cc') + \
+    env.Glob('contrib/unzip/*.c') + \
+    env.Glob('contrib/zlib/*.c')
+
+defs = []
+incs = ['include']
+
+# configure boost build
+if env['WITH_BF_BOOST']:
+    incs.append(env['BF_BOOST_INC'])
+else:
+    defs.append('ASSIMP_BUILD_BOOST_WORKAROUND')
+    incs.append('code/BoostWorkaround')
+
+# source code for these is not even in the blender repository for obvious reasons
+defs.append('ASSIMP_BUILD_NO_COLLADA_IMPORTER')
+defs.append('ASSIMP_BUILD_NO_BLEND_IMPORTER')
+
+env.BlenderLib ('extern_assimp', Split(sources), incs, defs, libtype=['extern'], priority=[40] )
