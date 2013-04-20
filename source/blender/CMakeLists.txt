@@ -145,3 +145,7 @@ if(WITH_FREESTYLE)
 	add_subdirectory(freestyle)
 endif()
 
+if(WITH_ASSIMP)
+	add_subdirectory(assimp)
+endif()
+
