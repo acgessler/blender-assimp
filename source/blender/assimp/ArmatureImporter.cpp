@@ -207,9 +207,9 @@ void ArmatureImporter::convert()
 	compute_world_matrix(in_scene->mRootNode,aiMatrix4x4());
 
 	// create a new object and attach a also new armature
-	ob_armature = util_add_object(out_scene, OB_ARMATURE, NULL);
+	ob_armature = util_add_object(&scene_imp.get_main(), out_scene, OB_ARMATURE, NULL);
 
-	armature = BKE_armature_add("armature");
+	armature = BKE_armature_add(&scene_imp.get_main(), "armature");
 	verbose("converting armature");
 
 	bArmature* const old_armature = static_cast<bArmature*>(ob_armature->data);

@@ -58,7 +58,7 @@ extern "C"
 namespace bassimp {
 
 	using namespace Assimp;
-
+	
 SceneImporter::SceneImporter(const char* path, bContext& C, const bassimp_import_settings& settings)
 : path(path)
 , C(C)
@@ -514,7 +514,7 @@ void SceneImporter::convert_node(const aiNode& in_node, Object* out_parent, bool
 
 	if (meshes + cameras + lights  == 0 &&  (!has_bones || has_mesh_descendants(in_node)) && !root_drop) {
 		
-		Object* const obj = util_add_object(out_scene, OB_EMPTY, in_node.mName.C_Str());
+		Object* const obj = util_add_object(&get_main(), out_scene, OB_EMPTY, in_node.mName.C_Str());
 		objects_done.push_back(obj);
 	}
 
@@ -528,7 +528,7 @@ void SceneImporter::convert_node(const aiNode& in_node, Object* out_parent, bool
 	else if (meshes + cameras + lights > 1)	{
 		assert(objects_done.size() > 1);
 
-		Object* const obj = util_add_object(out_scene, OB_EMPTY, in_node.mName.C_Str());
+		Object* const obj = util_add_object(&get_main(), out_scene, OB_EMPTY, in_node.mName.C_Str());
 		objects_done.push_back(obj);
 
 		const std::string name = in_node.mName.C_Str();
@@ -599,10 +599,10 @@ void SceneImporter::convert_node_transform(const aiNode& node_in, Object& out_ob
 
 Object* SceneImporter::convert_light(const aiLight& light) const
 {
-	Object* const ob = util_add_object(out_scene, OB_LAMP, NULL);
+	Object* const ob = util_add_object(&get_main(), out_scene, OB_LAMP, NULL);
 	verbose(("convert light: " + std::string(light.mName.C_Str())).c_str());
 
-	Lamp* const lamp = static_cast<Lamp*>(BKE_lamp_add(light.mName.C_Str()));
+	Lamp* const lamp = static_cast<Lamp*>(BKE_lamp_add(&get_main(), light.mName.C_Str()));
 	if (!lamp) {
 		error("Cannot create lamp");
 		return NULL;
@@ -660,10 +660,10 @@ Object* SceneImporter::convert_light(const aiLight& light) const
 
 Object* SceneImporter::convert_camera(const aiCamera& camera) const
 {
-	Object* const ob = util_add_object(out_scene, OB_CAMERA, NULL);
+	Object* const ob = util_add_object(&get_main(), out_scene, OB_CAMERA, NULL);
 	verbose(("convert camera: " + std::string(camera.mName.C_Str())).c_str());
 
-	Camera* const cam = static_cast<Camera*>(BKE_camera_add(camera.mName.C_Str()));
+	Camera* const cam = static_cast<Camera*>(BKE_camera_add(&get_main(), camera.mName.C_Str()));
 	if (!cam) {
 		error("Cannot create camera");
 		return NULL;
@@ -691,6 +691,16 @@ Object* SceneImporter::convert_mesh(const std::vector<const aiMesh*>& in_meshes,
 	imp.convert();
 	imp.makebmesh();
 	return imp.create_object(name);
+}
+
+bContext& SceneImporter::get_context() const
+{
+	return C;
+}
+
+Main& SceneImporter::get_main() const
+{
+	return *CTX_data_main(&C);
 }
 
 }

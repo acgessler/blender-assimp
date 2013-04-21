@@ -50,10 +50,10 @@ extern "C" {
 namespace bassimp {
 
 MeshImporter::MeshImporter(const SceneImporter& scene_imp, const std::vector<const aiMesh*>& in_meshes, Scene *out_scene, const char* name)
-: in_meshes(in_meshes)
+: scene_imp(scene_imp)
+, in_meshes(in_meshes)
 , out_scene(out_scene)
-, mesh(BKE_mesh_add(name))
-, scene_imp(scene_imp)
+, mesh(BKE_mesh_add(CTX_data_main(&scene_imp.get_context()), name))
 , name(name)
 {
 	assert(in_meshes.size());
@@ -109,7 +109,7 @@ Object* MeshImporter::create_object(const char* name)
 		return NULL;
 	}
 
-	Object* const ob = util_add_object(out_scene, OB_MESH, name);
+	Object* const ob = util_add_object(&scene_imp.get_main(), out_scene, OB_MESH, name);
 	Mesh* const old_mesh = static_cast<Mesh*>(ob->data);
 
 	ob->data = mesh;
@@ -537,7 +537,7 @@ void MeshImporter::mesh_add_edges(unsigned int len)
 
 	CustomData_free(&mesh->edata, mesh->totedge);
 	mesh->edata = edata;
-	mesh_update_customdata_pointers(mesh, FALSE); /* new edges don't change tessellation */
+	//mesh_update_customdata_pointers(mesh, FALSE); /* new edges don't change tessellation */
 
 	/* set default flags */
 	medge = &mesh->medge[mesh->totedge];

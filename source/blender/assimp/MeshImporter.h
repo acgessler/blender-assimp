@@ -40,11 +40,13 @@ class MeshImporter
 {
 private:
 
+	const SceneImporter& scene_imp;
+
 	Mesh* mesh;
 	Scene* out_scene;
 	std::vector<const aiMesh*> in_meshes;
 
-	const SceneImporter& scene_imp;
+	
 	std::string name;
 
 	// assimp-to-mesh local IDs

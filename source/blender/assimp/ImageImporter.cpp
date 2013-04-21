@@ -105,13 +105,13 @@ bool ImageImporter::convert()
 	return convert_file();
 }
 
-#define FILE_MAX 512
+#define BF_ASSIMP_IMAGE_FILE_MAX 512
 
 bool ImageImporter::convert_file()
 {
 	const char *image_filename = path.C_Str();
-	char dir[FILE_MAX];
-	char full_path[FILE_MAX];
+	char dir[BF_ASSIMP_IMAGE_FILE_MAX];
+	char full_path[BF_ASSIMP_IMAGE_FILE_MAX];
 
 	BLI_split_dir_part(scene_imp.get_file_path(), dir, sizeof(dir));
 	BLI_join_dirfile(full_path, sizeof(full_path), dir, image_filename);

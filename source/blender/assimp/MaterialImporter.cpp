@@ -113,12 +113,12 @@ void MaterialImporter::convert()
 {
 	aiString s;
 	if(aiGetMaterialString(in_mat,AI_MATKEY_NAME,&s) == AI_SUCCESS) {
-		mat = BKE_material_add(s.C_Str());
+		mat = BKE_material_add(&scene_imp.get_main(), s.C_Str());
 	}
 	else {
 		std::stringstream ss;
 		ss << "assimpmat-" << in_mat_index;
-		mat = BKE_material_add(ss.str().c_str());
+		mat = BKE_material_add(&scene_imp.get_main(), ss.str().c_str());
 	}
 
 	aiColor4D c;
@@ -200,7 +200,7 @@ void MaterialImporter::convert_texture(aiTextureType type, unsigned int index, c
 {
 	MTex* const mtex = mat->mtex[next_texture++] = add_mtex();
 	mtex->texco = TEXCO_UV;
-	mtex->tex = add_texture("Texture");
+	mtex->tex = add_texture(&scene_imp.get_main(), "Texture");
 	mtex->tex->type = TEX_IMAGE;
 	mtex->tex->imaflag &= ~TEX_USEALPHA;
 	mtex->tex->ima = convert_image(path);

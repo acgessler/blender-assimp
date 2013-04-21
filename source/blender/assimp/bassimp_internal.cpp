@@ -130,17 +130,17 @@ int util_set_parent(Object *ob, Object *par, bContext *C, bool is_parent_space)
 	ob->recalc |= OB_RECALC_OB | OB_RECALC_DATA;
 	par->recalc |= OB_RECALC_OB;
 
-	DAG_scene_sort(bmain, sce);
-	DAG_ids_flush_update(bmain, 0);
+	//DAG_scene_sort(bmain, sce);
+	//DAG_ids_flush_update(bmain, 0);
 	WM_event_add_notifier(C, NC_OBJECT|ND_TRANSFORM, NULL);
 
 	return true;
 }
 
 
-Object* util_add_object(Scene *scene, int type, const char *name)
+Object* util_add_object(Main* bmain, Scene *scene, int type, const char *name)
 {
-	Object *ob = BKE_object_add_only_object(type, name);
+	Object *ob = BKE_object_add_only_object(bmain, type, name);
 
 	ob->data= BKE_object_obdata_add_from_type(type);
 	ob->lay= scene->lay;

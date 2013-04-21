@@ -51,7 +51,7 @@ extern "C" {
 namespace bassimp
 {
 	int util_set_parent(Object *ob, Object *par, bContext *C, bool is_parent_space);
-	Object* util_add_object(Scene *scene, int type, const char *name);
+	Object* util_add_object(Main* bmain, Scene *scene, int type, const char *name);
 
 	std::string get_default_uv_channel_name(unsigned int index);
 	std::string get_default_vc_channel_name(unsigned int index);

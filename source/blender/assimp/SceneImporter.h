@@ -130,6 +130,8 @@ public:
 	// get blender object for a particular node, only works after the
 	// nodegraph has been converted.
 	Object* get_bobject_for_node(const aiNode& nd) const;
+	bContext& get_context() const;
+	Main& get_main() const;
 };
 
 }
